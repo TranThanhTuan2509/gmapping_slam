@@ -1,0 +1,100 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="meca">
+    
+
+<!-- ======================================= Model include  ====================================-->
+
+
+<!-- Base -->
+<xacro:include filename="$(find midterm)/xacro/model/base/base.xacro"/>
+
+<!-- Wheel -->
+<xacro:include filename="$(find midterm)/xacro/model/wheel/wheel.xacro"/>
+
+<!-- Wheel1
+<xacro:include filename="$(find midterm)/xacro/model/wheel1/wheel1.xacro"/> -->
+
+<!-- Wheel -->
+<xacro:include filename="$(find midterm)/xacro/model/wheel1/left_forward_wheel.xacro"/>
+
+<!-- Wheel -->
+<xacro:include filename="$(find midterm)/xacro/model/wheel1/left_backward_wheel.xacro"/>
+
+<!-- Wheel -->
+<xacro:include filename="$(find midterm)/xacro/model/wheel1/right_forward_wheel.xacro"/>
+
+<!-- Wheel -->
+<xacro:include filename="$(find midterm)/xacro/model/wheel1/right_backward_wheel.xacro"/>
+
+<!-- Arm -->
+<xacro:include filename="$(find midterm)/xacro/model/arm/arm.xacro"/>
+
+<!-- Arm1 -->
+<xacro:include filename="$(find midterm)/xacro/model/arm1/arm1.xacro"/>
+
+<!-- RplidarA1 -->
+<xacro:include filename="$(find midterm)/xacro/model/sensor/lidar/lidar.xacro"/>
+
+<!-- camera -->
+<xacro:include filename="$(find midterm)/xacro/model/sensor/camera/camera.xacro"/>
+
+<!-- rear camera -->
+<!-- <xacro:include filename="$(find midterm)/xacro/model/sensor/rear_camera/rear_camera.xacro"/> -->
+
+<!-- ======================================= Gazebo include  ====================================-->
+
+
+<!-- Transmission -->
+<xacro:include filename="$(find midterm)/xacro/gazebo/transmission/transmission.xacro"/>
+
+
+
+<!-- Plugin -->
+<xacro:include filename="$(find midterm)/xacro/gazebo/plugin/plugin.xacro"/>
+
+
+
+
+<!-- ======================================= Model Macro  ====================================-->
+
+<!-- Base -->
+<xacro:base/>
+
+<!-- Wheel -->
+<xacro:wheel/>
+
+<!-- Wheel1 -->
+<!-- <xacro:wheel1/> -->
+
+<xacro:left_forward_wheel/>
+<xacro:left_backward_wheel/>
+<xacro:right_forward_wheel/>
+<xacro:right_backward_wheel/>
+
+<!-- Wheel -->
+<xacro:arm/>
+
+<!-- Wheel1 -->
+<xacro:arm1/>
+
+<!-- RplidarA1 -->
+<xacro:lidar/>
+
+<!-- camera -->
+<xacro:camera/>
+
+<!-- rear_camera -->
+<!-- <xacro:rear_camera/> -->
+<!-- ======================================= Gazebo Macro  ====================================-->
+
+
+<!-- Transmission -->
+<xacro:transmission_gazebo/>
+
+
+
+<!-- Plugin -->
+<xacro:gazebo_plugin/>
+
+
+</robot>

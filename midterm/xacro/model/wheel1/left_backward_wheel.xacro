@@ -1,0 +1,79 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:macro name="left_backward_wheel">
+
+        <link name="Left_backward_wheel1">
+            <inertial>
+                <origin xyz="-3.88578058618805E-16 1.52655665885959E-16 -0.0318963396983103" rpy="0 0 0" />
+                <mass value="0.38693433977405" />
+                <inertia ixx="0.000164665684224543" ixy="-5.44366971754961E-17" ixz="-1.64638873428518E-17" iyy="0.000164665684224467" iyz="-4.73291942910437E-17" izz="0.000205539151192063" />
+            </inertial>
+            <visual>
+                <origin xyz="0 0 0" rpy="0 0 0" />
+                <geometry>
+                    <cylinder length="0.009" radius="0.014"/>
+                </geometry>
+                <material name="">
+                    <color rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+                </material>
+            </visual>
+            <collision>
+                <origin xyz="0 0 0" rpy="0 0 0" />
+                <geometry>
+                    <cylinder length="0.009" radius="0.014"/>
+                </geometry>
+            </collision>
+        </link>
+        
+        <joint name="Left_backward_joint1" type="continuous">
+            <origin xyz="-0.1135 0.165 -0.0179" rpy="-1.5708 0 0" />
+            <parent link="base_link" />
+            <child link="Left_backward_wheel1" />
+            <axis xyz="0 0 1" />
+            <dynamics damping="0.1" friction="0.1" />
+        </joint>
+
+	<gazebo reference="Left_backward_wheel1">
+		<material>Gazebo/Green</material>
+		<kp>1000000.0</kp> <!-- kp and kd for rubber -->
+		<kd>100.0</kd>
+		<mu1>1.0</mu1>
+		<mu2>1.0</mu2>
+		<maxVel>3.0</maxVel>
+		<minDepth>0.00</minDepth>
+	</gazebo>
+
+      <gazebo>
+    
+    <plugin name="left_backward_wheel_controller" filename="libgazebo_ros_control.so">
+      <updateRate>10.0</updateRate>
+      <robotNamespace>/midterm</robotNamespace>
+      <leftRearJoint>Left_backward_joint1</leftRearJoint>
+      <wheelSeparation>0.4</wheelSeparation>
+      <wheelDiameter>0.2</wheelDiameter>
+      <robotBaseFrame>base_footprint</robotBaseFrame>
+      <torque>10</torque>
+
+      <topicName>cmd_vel</topicName>
+      <odometryTopic>odom</odometryTopic>
+      <odometryFrame>odom</odometryFrame>
+
+      <commandTopic>cmd_vel</commandTopic>
+      <topic_name_twist>cmd_vel</topic_name_twist>
+      <topic_name_odometry>odom</topic_name_odometry>
+      <topic_name_joint>joint</topic_name_joint>
+
+      <broadcastTF>true</broadcastTF>
+
+      <covariance_x>0.0001</covariance_x>
+      <covariance_y>0.0001</covariance_y>
+      <covariance_yaw>0.01</covariance_yaw>
+
+    </plugin>
+
+  </gazebo>
+
+    </xacro:macro>
+
+</robot>

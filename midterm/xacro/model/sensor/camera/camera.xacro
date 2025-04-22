@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <xacro:macro name="camera">
+        <link name="camera">
+            <inertial>
+                <mass value="0.1"/>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <inertia ixx="1e-6" ixy="0.0" ixz="0.0" iyy="1e-6" iyz="0.0" izz="1e-6" />
+            </inertial>
+
+            <visual>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <geometry>
+                    <box size="0.02 0.02 0.02"/>
+                </geometry>
+            </visual>
+
+            <collision>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <geometry>
+                    <box size="0.02 0.02 0.02"/>
+                </geometry>
+            </collision>
+        </link>
+
+        <joint name="camera_joint" type="fixed">
+
+            <parent link="base_link"/>
+
+            <child link="camera"/>
+
+            <!-- <origin xyz="0.18 -0.01 0" rpy="-1.57 0 -1.57"/> -->
+            <origin xyz="-0.14 0 0.025" rpy="0 0 3.14"/>
+
+        </joint>
+
+        <gazebo reference="camera">
+            <material>Gazebo/Red</material>
+                <sensor type="camera" name="camera1">
+                    <update_rate>30.0</update_rate>
+                    <camera name="head">
+                        <horizontal_fov>1.3962634</horizontal_fov>
+                        <image>
+                            <width>800</width>
+                            <height>800</height>
+                            <format>R8G8B8</format>
+                        </image>
+                        <clip>
+                            <near>0.02</near>
+                            <far>300</far>
+                        </clip>
+                    </camera>
+                    <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
+                        <robotNamespace>/midterm</robotNamespace>
+                        <alwaysOn>true</alwaysOn>
+                        <updateRate>0.0</updateRate>
+                        <cameraName>camera</cameraName>
+                        <imageTopicName>rgb/image_raw</imageTopicName>
+                        <cameraInfoTopicName>rgb/camera_info</cameraInfoTopicName>
+                        <frameName>camera</frameName>
+                        <hackBaseline>0.07</hackBaseline>
+                        <distortionK1>0.0</distortionK1>
+                        <distortionK2>0.0</distortionK2>
+                        <distortionK3>0.0</distortionK3>
+                        <distortionT1>0.0</distortionT1>
+                        <distortionT2>0.0</distortionT2>
+                    </plugin>
+                </sensor>
+            </gazebo>
+
+
+        </xacro:macro>
+    </robot>

@@ -1,0 +1,44 @@
+<launch>
+  <!-- Arguments from your old launch -->
+  <arg name="model" default="$(find midterm)/xacro/mecanum_xacro_diff.xacro"/>
+  <arg name="gui" default="true" />
+  <arg name="rvizconfig" default="$(find midterm)/rviz/cartographer.rviz"/>
+
+  <!-- Launch Gazebo -->
+  <include file="$(find midterm)/launch/gazebo_xacro.launch"/>
+
+  <!-- Robot Description -->
+  <param name="robot_description" command="$(find xacro)/xacro $(arg model)" />
+
+  <!-- Joint State Publisher -->
+  <node if="$(arg gui)" name="joint_state_publisher" pkg="joint_state_publisher_gui" type="joint_state_publisher_gui" />
+  <node unless="$(arg gui)" name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+
+  <!-- Controllers -->
+  <rosparam file="$(find midterm)/config/diff_drive.yaml" command="load"/>
+  <rosparam file="$(find midterm)/config/control_servo.yaml" command="load"/>
+  <node name="robot_arm_controller_spawner" pkg="controller_manager" type="spawner" respawn="true" output="screen" args="
+       meca/diff_drive_controller
+       meca/servo1_controller
+       meca/servo2_controller
+       --shutdown-timeout 3"/>
+
+  <!-- Robot State Publisher -->
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="false" output="screen"/>
+
+  <!-- Cartographer -->
+  <param name="/use_sim_time" value="true" />
+  <node pkg="cartographer_ros" type="cartographer_node" name="cartographer_node"
+        args="-configuration_directory $(find midterm)/config
+              -configuration_basename my_robot_2d.lua"
+        output="screen">
+    <remap from="scan" to="/laser" />
+    <remap from="odom" to="/odom" />
+  </node>
+  <node pkg="cartographer_ros" type="cartographer_occupancy_grid_node"
+        name="cartographer_occupancy_grid_node"
+        args="-resolution 0.05 -publish_period_sec 1.0" />
+
+  <!-- RViz -->
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" output="screen"/>
+</launch>

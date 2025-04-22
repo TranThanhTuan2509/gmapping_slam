@@ -1,0 +1,101 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:macro name="arm1">
+
+        <link name="link11">
+            <inertial>
+                <origin xyz="0.0130133047131633 0.0889204179261883 -0.0296765696165617" rpy="0 0 0" />
+                <mass value="0.164486554024359" />
+                <inertia ixx="0.000544779739701674" ixy="-7.45784439965975E-05" ixz="9.94065100983671E-08" iyy="4.6096716851494E-05" iyz="6.79248063491979E-07" izz="0.000565982592073471" />
+            </inertial>
+            <visual>
+                <origin xyz="0 0 0" rpy="0 0 0" />
+                <geometry>
+                    <cylinder length="0.015" radius="0.009"/>
+                </geometry>
+                <material name="">
+                    <color rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+                </material>
+            </visual>
+            <collision>
+                <origin xyz="0 0 0" rpy="0 0 0" />
+                <geometry>
+                    <cylinder length="0.015" radius="0.009"/>
+                </geometry>
+            </collision>
+        </link>
+
+        <joint name="link1_joint1" type="revolute">
+            <origin xyz="-0.025 0.0295 0.085" rpy="1.5708 -0.85308 3.1416" />
+            <parent link="base_link" />
+            <child link="link11" />
+            <axis xyz="0 0 1" />
+            <limit lower="0" upper="0.6" effort="10" velocity="2" />
+            <dynamics damping="0.1" friction="0.1" />
+        </joint>
+
+        <link name="link21">
+            <inertial>
+                <origin xyz="0.104899329069202 0.0379645740880208 -0.0321285668568063" rpy="0 0 0" />
+                <mass value="0.184332677556066" />
+                <inertia ixx="0.000107535031720432" ixy="-0.000205718924701572" ixz="-1.78149467639473E-06" iyy="0.000593870869716796" iyz="-6.41437127577083E-07" izz="0.000681305864636033" />
+            </inertial>
+            <visual>
+                <origin xyz="0 0 0" rpy="0 0 0" />
+                <geometry>
+                    <cylinder length="0.015" radius="0.009"/>
+                </geometry>
+                <material name="">
+                    <color rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+                </material>
+            </visual>
+            <collision>
+                <origin xyz="0 0 0" rpy="0 0 0" />
+                <geometry>
+                    <cylinder length="0.015" radius="0.009"/>
+                </geometry>
+            </collision>
+        </link>
+
+        <joint name="link2_joint1" type="revolute">
+            <origin xyz="0.024617 0.16821 -0.08085" rpy="3.1416 0 2.2885" />
+            <parent link="link11" />
+            <child link="link21" />
+            <axis xyz="0 0 1" />
+            <limit lower="0" upper="1.047" effort="10" velocity="2" />
+            <dynamics damping="0.1" friction="0.1" />
+        </joint>
+    </xacro:macro>
+
+    <gazebo reference="link11">
+        <material>Gazebo/Green</material>
+        <mu1>0.2</mu1>
+        <mu2>0.2</mu2>
+        <material>Gazebo/Black</material>
+    </gazebo>
+
+    <gazebo reference="link21">
+        <material>Gazebo/Green</material>
+        <mu1>0.2</mu1>
+        <mu2>0.2</mu2>
+        <material>Gazebo/Black</material>
+    </gazebo>
+
+    <gazebo>
+        <plugin name="servo_plugin1" filename="libgazebo_ros_joint_position_control.so">
+            <joint>link1_joint1</joint>
+            <commandTopic>/servo_joint1/command</commandTopic>
+            <gain>10.0</gain>
+        </plugin>
+    </gazebo>
+
+    <gazebo>
+        <plugin name="servo_plugin2" filename="libgazebo_ros_joint_position_control.so">
+            <joint>link2_joint1</joint>
+            <commandTopic>/servo_joint2/command</commandTopic>
+            <gain>10.0</gain>
+        </plugin>
+    </gazebo>
+
+</robot>

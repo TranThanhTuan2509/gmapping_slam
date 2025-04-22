@@ -1,0 +1,81 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:macro name="transmission_gazebo">
+        <!-- Transmition -->
+        <transmission name="wheel_tran11">
+            <type>transmission_interface/SimpleTransmission</type>
+            <actuator name="wheel_motor1">
+
+                <mechanicalReduction>1</mechanicalReduction>
+            </actuator>
+            <joint name="Left_forward_joint1">
+                <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+            </joint>
+        </transmission>
+
+
+        <!-- Transmition -->
+        <transmission name="wheel_tran22">
+            <type>transmission_interface/SimpleTransmission</type>
+            <actuator name="wheel_motor2">
+
+                <mechanicalReduction>1</mechanicalReduction>
+            </actuator>
+            <joint name="Right_forward_joint1">
+                <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+            </joint>
+        </transmission>
+
+
+        <!-- Transmition -->
+        <transmission name="wheel_tran33">
+            <type>transmission_interface/SimpleTransmission</type>
+            <actuator name="wheel_motor3">
+
+                <mechanicalReduction>1</mechanicalReduction>
+            </actuator>
+            <joint name="Left_backward_joint1">
+                <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+            </joint>
+        </transmission>
+
+
+        <!-- Transmition -->
+        <transmission name="wheel_tran44">
+            <type>transmission_interface/SimpleTransmission</type>
+            <actuator name="wheel_motor4">
+
+                <mechanicalReduction>1</mechanicalReduction>
+            </actuator>
+            <joint name="Right_backward_joint1">
+                <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+            </joint>
+        </transmission>
+
+
+        <transmission name="tran1">
+            <type>transmission_interface/SimpleTransmission</type>
+            <joint name="link1_joint1">
+                <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+            </joint>
+            <actuator name="motor1">
+                <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+                <mechanicalReduction>1</mechanicalReduction>
+            </actuator>
+        </transmission>
+
+        <transmission name="tran2">
+            <type>transmission_interface/SimpleTransmission</type>
+            <joint name="link2_joint1">
+                <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+            </joint>
+            <actuator name="motor2">
+                <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+                <mechanicalReduction>1</mechanicalReduction>
+            </actuator>
+        </transmission>
+
+
+    </xacro:macro>
+</robot>
