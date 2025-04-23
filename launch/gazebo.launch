@@ -1,0 +1,38 @@
+<launch>
+  <!-- Load robot description (URDF) vào parameter server -->
+  <param name="robot_description" command="$(find xacro)/xacro '$(find slam_car)/urdf/urdf/urdf.urdf'" />
+
+  <!-- Khởi động Gazebo với thế giới có vật thể (my_world.world) -->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(find slam_car)/world/my_world.world" />
+    <arg name="paused" value="false" />
+    <arg name="use_sim_time" value="true" />
+    <arg name="gui" value="true" />
+  </include>
+
+  <!-- Xuất TF cố định từ base_footprint -> base_link -->
+  <node
+    name="tf_footprint_base"
+    pkg="tf"
+    type="static_transform_publisher"
+    args="0 0 0 0 0 0 base_footprint base_link 40" />
+
+  <!-- Spawn robot từ URDF -->
+  <node
+    name="spawn_model"
+    pkg="gazebo_ros"
+    type="spawn_model"
+    args="-param robot_description -urdf -model slam_car"
+    output="screen" />
+
+  <!-- Khởi động các controller cho tay máy và base -->
+  <rosparam file="$(find slam_car)/config/arm_controllers.yaml" command="load" />
+  <rosparam file="$(find slam_car)/config/diff_controller.yaml" command="load" />
+
+  <node
+    name="controller_spawner"
+    pkg="controller_manager"
+    type="spawner"
+    args="joint_state_controller diff_drive_controller arm1_joint_position_controller arm2_joint_position_controller"
+    output="screen" />
+</launch>

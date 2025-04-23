@@ -1,0 +1,35 @@
+<launch>
+  <!-- Tham số robot URDF -->
+  <param name="robot_description" textfile="$(find slam_car)/urdf/urdf/urdf.urdf" />
+
+  <!-- Publish trạng thái joint và TF -->
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+
+  <!-- RViz với cấu hình riêng -->
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find slam_car)/rviz/view_display.rviz" />
+
+  <!-- Static transform base_footprint -> base_link -->
+  <node name="tf_footprint_base" pkg="tf" type="static_transform_publisher"
+      args="0 0 0 0 0 0 base_footprint base_link 40" />
+
+  <!-- Gmapping SLAM node -->
+  <node name="slam_gmapping" pkg="gmapping" type="slam_gmapping" output="screen" />
+
+  <!-- Move base for navigation -->
+  <node pkg="move_base" type="move_base" name="move_base" output="screen">
+    <rosparam file="$(find slam_car)/config/costmap_common_params.yaml" command="load" ns="global_costmap" />
+    <rosparam file="$(find slam_car)/config/costmap_common_params.yaml" command="load" ns="local_costmap" />
+    <rosparam file="$(find slam_car)/config/global_costmap_params.yaml" command="load" />
+    <rosparam file="$(find slam_car)/config/local_costmap_params.yaml" command="load" />
+    <rosparam file="$(find slam_car)/config/base_local_planner_params.yaml" command="load" />
+  </node>
+
+  <!-- Explore lite for autonomous exploration -->
+  <node pkg="explore_lite" type="explore" name="explore" output="screen">
+    <param name="robot_base_frame" value="base_link"/>
+    <param name="costmap_topic" value="move_base/global_costmap/costmap"/>
+    <param name="frequency" value="1.0"/>
+    <param name="min_frontier_size" value="0.2"/> <!-- Smaller frontiers -->
+    <param name="progress_timeout" value="30.0"/>
+  </node>
+</launch>
